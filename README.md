@@ -6,7 +6,7 @@ This project automates the process of downloading Parquet files from the NYC Tax
 
 - Scrapes all downloadable Parquet file URLs from the NYC Taxi Records webpage.
 - Saves the list of URLs into a CSV file.
-- The CSV is stored in a subfolder based on the timestamp it was created (e.g., data/2024-04-05/available_links.csv).
+- The CSV is stored in a subfolder based on the timestamp it was created (e.g., data/2024/04/05/sample.csv).
 
 ### ⏳ Phase 2: File Download (Coming Soon)
 - Will read the CSV file from Phase 1.
