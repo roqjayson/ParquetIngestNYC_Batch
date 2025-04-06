@@ -1,0 +1,17 @@
+[2025-04-06 18:58:39,785] INFO - \U0001f3c1 Starting ParquetIngestNYC_Batch full pipeline execution...
+[2025-04-06 18:58:39,787] INFO - Installing requirements...
+[2025-04-06 18:58:44,107] INFO - \u2705 Requirements installed successfully.
+[2025-04-06 18:58:44,108] INFO - \U0001f680 Running Phase 1: check_links_NYC.py
+[2025-04-06 18:58:45,898] INFO - \u2705 Phase 1 complete.
+[2025-04-06 18:58:45,898] INFO - \U0001f4e5 Running Phase 2: download_parquet_NYC.py
+[2025-04-06 18:58:45,899] INFO - \U0001f4e4 Phase 2 command: python c:\Users\roque\Documents\GitHub\ParquetIngestNYC_Batch\code\scripts\download_parquet_NYC.py --start 2023-01 --end 2023-12 --limit 12
+[2025-04-06 18:58:46,035] ERROR - \u274c Error in Phase 2: Command '['python', 'c:\\Users\\roque\\Documents\\GitHub\\ParquetIngestNYC_Batch\\code\\scripts\\download_parquet_NYC.py', '--start', '2023-01', '--end', '2023-12', '--limit', '12']' returned non-zero exit status 1.
+[2025-04-06 19:09:58,936] INFO - \U0001f3c1 Starting ParquetIngestNYC_Batch full pipeline execution...
+[2025-04-06 19:09:58,937] INFO - Installing requirements...
+[2025-04-06 19:10:02,854] INFO - \u2705 Requirements installed successfully.
+[2025-04-06 19:10:02,855] INFO - \U0001f680 Running Phase 1: check_links_NYC.py
+[2025-04-06 19:10:05,252] INFO - \u2705 Phase 1 complete.
+[2025-04-06 19:10:05,253] INFO - \U0001f4e5 Running Phase 2: download_parquet_NYC.py
+[2025-04-06 19:10:05,253] INFO - \U0001f4e4 Phase 2 command: C:\Users\roque\Documents\GitHub\ParquetIngestNYC_Batch\.venv\Scripts\python.exe c:\Users\roque\Documents\GitHub\ParquetIngestNYC_Batch\code\scripts\download_parquet_NYC.py --start 2023-01 --end 2023-12 --limit 12
+[2025-04-06 19:11:34,807] INFO - \u2705 Phase 2 complete.
+[2025-04-06 19:11:34,807] INFO - \U0001f389 All tasks completed successfully!

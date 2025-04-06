@@ -1,2 +1,7 @@
 requests
 bs4
+pandas
+datetime
+pathlib
+tqdm
+argparse
