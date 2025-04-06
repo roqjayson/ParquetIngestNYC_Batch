@@ -21,9 +21,13 @@ This project automates the process of downloading Parquet files from the NYC Tax
 
 ParquetIngestNYC_Batch/
 ```
-├── code
+├── code    
+|    └── logs
+|        └── run_all.log (Sample log file)
 |    └── script
-|        └── check_links_NYC.py
+|        └── check_links_NYC.py (Phase 1)
+|        └── download_parquet_NYC.py (Phase 2)
+|    └── chck_and_download (Combined Phase 1 and 2)
 |    └── requirements
 |        └── requirements.txt
 ├── README.md
@@ -42,3 +46,16 @@ ParquetIngestNYC_Batch/
 ### 📌 Notes
 - Make sure you have enough local storage for the downloaded CSV/Parquet files.
 - Large datasets can take time and bandwidth to download.
+
+
+### Sample Results
+Web scraped material to CSV:
+
+![image](https://github.com/user-attachments/assets/3327faf6-f548-43f3-a084-431b99b681b4)
+
+![image](https://github.com/user-attachments/assets/50767998-6dc1-41ba-9567-60e79745c0f1)
+
+
+List of Parquet files downloaded:
+
+![image](https://github.com/user-attachments/assets/843e2da9-71ec-46d7-9676-773981e3b3d1)
