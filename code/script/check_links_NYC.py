@@ -1,62 +1,89 @@
 import os
+import csv
 import requests
 from bs4 import BeautifulSoup
-import csv
 from datetime import datetime
+from typing import List
 
-# URL of the TLC Trip Record Data page
-url = "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page"
 
-response = requests.get(url)
-soup = BeautifulSoup(response.text, 'html.parser')
+# Constants
+BASE_URL = "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page"
+DOWNLOAD_FOLDER_NAME = "TLC_Parquet_Links"
 
-# Finds all links to parquet files and place them in a list
-parquet_links = []
 
-for a_tag in soup.find_all('a', href=True):
-    if 'parquet' in a_tag['href'] or 'pdf' in a_tag['href']:  # Include .parquet and .pdf links
-        parquet_links.append(a_tag['href'])
+def fetch_html(url: str) -> str:
+    """Fetch the HTML from a URL. Nothing fancy. Just GET it."""
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.text
 
-# Gets file extension type dynamically
-def get_file_extension(url):
-    # Extract file extension from the URL
+
+def extract_links(html: str, extensions: List[str]) -> List[str]:
+    """
+    Scrape all links from the HTML that match a list of extensions.
+    You give me ['.parquet', '.pdf'] and I give you links with those.
+    """
+    soup = BeautifulSoup(html, 'html.parser')
+    links = [
+        a['href']
+        for a in soup.find_all('a', href=True)
+        if any(ext in a['href'] for ext in extensions)
+    ]
+    return links
+
+
+def get_file_extension(url: str) -> str:
+    """
+    Pull the file extension from a URL and make it all caps.
+    If there's no extension, we just call it 'OTHER'.
+    """
     ext = os.path.splitext(url)[-1].lower()
+    return ext[1:].upper() if ext.startswith('.') else 'OTHER'
+
+
+def create_output_path(base_folder: str, timestamp: datetime) -> str:
+    """
+    Builds a folder path like ~/Desktop/base_folder/Y/M/D/H/M and makes sure it exists.
+    Returns the full path. That’s it.
+    """
+    time_parts = [timestamp.strftime(part) for part in ['%Y', '%m', '%d', '%H', '%M']]
+    full_path = os.path.join(os.path.expanduser("~"), "Desktop", base_folder, *time_parts)
+    os.makedirs(full_path, exist_ok=True)
+    return full_path
+
+
+def save_links_to_csv(links: List[str], folder_path: str, timestamp: datetime):
+    """
+    Dumps the links to a CSV. Includes file extension and timestamp.
+    CSV lands in the folder_path you gave me.
+    """
+    filename = f"parquet_links_{timestamp.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+    filepath = os.path.join(folder_path, filename)
+
+    with open(filepath, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(["URL", "Extension", "Time Scanned"])
+        scan_time = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+        for link in links:
+            extension = get_file_extension(link)
+            writer.writerow([link, extension, scan_time])
     
-    # Return extension after the dot (excluding the dot itself)
-    if ext and ext.startswith('.'):
-        return ext[1:].upper()  # Remove the dot and return the extension in uppercase
-    else:
-        return 'OTHER'  # Default case for links without an extension
+    print(f"CSV file saved at: {filepath}")
 
-# Gets the current time for folder structure and timestamped filename
-current_time = datetime.now()
-year = current_time.strftime('%Y')
-month = current_time.strftime('%m')
-day = current_time.strftime('%d')
-hour = current_time.strftime('%H')
-minute = current_time.strftime('%M')
-scan_time = current_time.strftime('%Y-%m-%d %H:%M:%S')  # For timestamp in CSV
 
-# Defines the folder structure based on Year/Month/Day/Hour/Minute
-base_folder = os.path.join(os.path.expanduser("~"), "Desktop", "TLC_Parquet_Links", year, month, day, hour, minute)
+def main():
+    """
+    Main script runner.
+    Grabs the HTML, pulls out parquet/pdf links, saves them to a timestamped CSV.
+    Folders are organized by datetime. Neat and tidy.
+    """
+    html = fetch_html(BASE_URL)
+    links = extract_links(html, extensions=['.parquet', '.pdf'])
+    timestamp = datetime.now()
+    output_folder = create_output_path(DOWNLOAD_FOLDER_NAME, timestamp)
+    save_links_to_csv(links, output_folder, timestamp)
 
-# Creates the nested folders if they don't exist, but will not overwrite any existing ones
-os.makedirs(base_folder, exist_ok=True)
 
-# Generates the filename with timestamp
-csv_file_name = f"parquet_links_{current_time.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
-csv_file_path = os.path.join(base_folder, csv_file_name)
-
-# Writes the links, extension type, and timestamp to the CSV file
-with open(csv_file_path, mode='w', newline='', encoding='utf-8') as file:
-    writer = csv.writer(file)
-    
-    # Writes the header
-    writer.writerow(["URL", "Extension", "Time Scanned"])
-    
-    # Writes the URLs, extension type, and the timestamp
-    for link in parquet_links:
-        extension = get_file_extension(link)
-        writer.writerow([link, extension, scan_time])
-
-print(f"CSV file saved at: {csv_file_path}")
+if __name__ == "__main__":
+    main()
