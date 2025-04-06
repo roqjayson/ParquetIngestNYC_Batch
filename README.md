@@ -9,24 +9,18 @@ This project automates the process of downloading Parquet files from the NYC Tax
 - The CSV is stored in a subfolder based on the timestamp it was created (e.g., data/2024/04/05/sample.csv).
 
 ### ⏳ Phase 2: File Download (Coming Soon)
-- Will read the CSV file from Phase 1.
-- Downloads each Parquet file and saves it to organized folders based on their category or time period.
+- Reads the CSV from Phase 1.
+- Downloads each Parquet file and saves it to organized folders based on their time period.
+- Allows parameterized execution by either limiting the number of files to be downloaded or limiting the date range of download.
 
 ## 🛠️ Tech Stack
 - **Language**: Python
-- **Libraries**: requests, BeautifulSoup, os, csv. (Might be updated in the future)
+- **Libraries**: See requirements/requirements.txt
 
 ## 📁 Project Structure
 
 ParquetIngestNYC_Batch/
 ```
-├── data
-│   └── YYYY
-|       └── MM
-|           └── DD
-|               └── HH
-|                    └── MM
-│                       └── available_links.csv
 ├── code
 |    └── script
 |        └── check_links_NYC.py
@@ -39,19 +33,10 @@ ParquetIngestNYC_Batch/
 
 ### Prerequisites
 - Python 3.8+
-- Install dependencies:
-
-  ```bash
-  pip install -r requirements/requirements.txt
-  ```
   
-### Run Phase 1
-
- ```python
- python check_links_NYC.py 
- ```
- - This will generate a CSV file containing all download links found on the NYC Taxi Data website.
- - The CSV is automatically saved in a timestamped folder under your local desktop. (It will be improved with having the file stored in the repo folder.
+### Execution
+- Fork repo and then run the script `chck_and_download.py`
+- Logs are found in /logs folder (no datetime attached to the log file yet)
 
 
 ### 📌 Notes
