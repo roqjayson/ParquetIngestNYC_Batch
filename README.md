@@ -8,10 +8,17 @@ This project automates the process of downloading Parquet files from the NYC Tax
 - Saves the list of URLs into a CSV file.
 - The CSV is stored in a subfolder based on the timestamp it was created (e.g., data/2024/04/05/sample.csv).
 
-### ⏳ Phase 2: File Download (Coming Soon)
+### ⏳ Phase 2: File Download
 - Reads the CSV from Phase 1.
 - Downloads each Parquet file and saves it to organized folders based on their time period.
 - Allows parameterized execution by either limiting the number of files to be downloaded or limiting the date range of download.
+
+## Upcoming Releases
+### 🛠️ Phase 3: Stage Parquet to database
+### 🛠️ Phase 4: Flatten Staged Parquet
+### 🛠️ Phase 5: Normalize Data
+### 🛠️ Phase 6: Coming Soon
+---
 
 ## 🛠️ Tech Stack
 - **Language**: Python
